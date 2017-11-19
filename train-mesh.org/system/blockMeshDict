@@ -1,5 +1,5 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
+| ========                |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
 |  \\    /   O peration     | Version:  2.3.x                                 |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
@@ -20,25 +20,129 @@ FoamFile
 
 convertToMeters 1;
 
+TRAIN_W 5;
+TRAIN_H 5;
+TRAIN_L 63;
+
+CENTER -0.8;
+HEAD 15;
+FLOOR -0.156;
+
+TR_MIN_X #calc "$CENTER - $TRAIN_W/2";
+TR_MAX_X #calc "$CENTER + $TRAIN_W/2";
+TR_MIN_Y #calc "$HEAD - $TRAIN_L";
+TR_MAX_Y #calc "$HEAD";
+TR_MIN_Z #calc "$FLOOR";
+TR_MAX_Z #calc "$FLOOR + $TRAIN_H";
+
+TUNNEL_EXTRA_BETWEEN 0.2;
+TUNNEL_EXTRA_SIDE 0.2;
+TUNNEL_LENGTH 100;
+TUNNEL_START 25;
+
+TN_MIN_X #calc "$CENTER - $TRAIN_W/2 - $TRAIN_W*$TUNNEL_EXTRA_SIDE";
+TN_MAX_X #calc "$CENTER + $TRAIN_W/2 + $TRAIN_W*(1 + $TUNNEL_EXTRA_SIDE + $TUNNEL_EXTRA_BETWEEN) ";
+TN_MID_X #calc "($TN_MIN_X + $TN_MAX_X)/2";
+TN_MIN_Y #calc "$TUNNEL_START";
+TN_MAX_Y #calc "$TUNNEL_START + $TUNNEL_LENGTH";
+TN_MIN_Z #calc "$FLOOR";
+TN_MAX_Z #calc "$FLOOR + $TRAIN_H";
+TN_DOME_Z #calc "$FLOOR + $TRAIN_H + ($TN_MAX_X - $TN_MIN_X)/2";
+
+GAP_X 10;
+GAP_Y 20;
+GAP_Z 5;
+
+SP_MIN_X #calc "$TN_MIN_X - $GAP_X";
+SP_MAX_X #calc "$TN_MAX_X + $GAP_X";
+SP_MIN_Y #calc "$TR_MIN_Y - $GAP_Y";
+SP_MAX_Y #calc "$TN_MAX_Y + $GAP_Y + $TRAIN_L";
+SP_MIN_Z #calc "$TN_MIN_Z";
+SP_MAX_Z #calc "$TN_DOME_Z + $GAP_Z";
+
+CELLS_X_TN 20;
+CELLS_X_SP 5;
+CELLS_Y_TN 100;
+CELLS_Y_ST 100;
+CELLS_Y_EN 80;
+CELLS_Z_TN 20;
+CELLS_Z_SP 5;
+CELLS_Z #calc "$CELLS_Z_SP + $CELLS_Z_TN";
+
 vertices
 (
-    (-15.8 -150 -0.156)
-    ( 14.2 -150 -0.156)
-    ( 14.2   50 -0.156)
-    (-15.8   50 -0.156)
-    (-15.8 -150 25.156)
-    ( 14.2 -150 25.156)
-    ( 14.2   50 25.156)
-    (-15.8   50 25.156)
+//START - 0
+   ( $SP_MIN_X $SP_MIN_Y $SP_MIN_Z) //0 
+   ( $SP_MAX_X $SP_MIN_Y $SP_MIN_Z) //1
+   ( $SP_MAX_X $SP_MIN_Y $SP_MAX_Z) //2
+   ( $SP_MIN_X $SP_MIN_Y $SP_MAX_Z) //3
+   ( $TN_MIN_X $SP_MIN_Y $TN_MIN_Z) //4
+   ( $TN_MAX_X $SP_MIN_Y $TN_MIN_Z) //5
+   ( $TN_MAX_X $SP_MIN_Y $TN_MAX_Z) //6
+   ( $TN_MIN_X $SP_MIN_Y $TN_MAX_Z) //7
+   ( $TN_MIN_X $SP_MIN_Y $SP_MAX_Z) //8
+   ( $TN_MAX_X $SP_MIN_Y $SP_MAX_Z) //9
+//TUNNEL_ENTER - 1
+   ( $SP_MIN_X $TN_MIN_Y $SP_MIN_Z) //0
+   ( $SP_MAX_X $TN_MIN_Y $SP_MIN_Z) //1
+   ( $SP_MAX_X $TN_MIN_Y $SP_MAX_Z) //2
+   ( $SP_MIN_X $TN_MIN_Y $SP_MAX_Z) //3
+   ( $TN_MIN_X $TN_MIN_Y $TN_MIN_Z) //4
+   ( $TN_MAX_X $TN_MIN_Y $TN_MIN_Z) //5
+   ( $TN_MAX_X $TN_MIN_Y $TN_MAX_Z) //6
+   ( $TN_MIN_X $TN_MIN_Y $TN_MAX_Z) //7
+   ( $TN_MIN_X $TN_MIN_Y $SP_MAX_Z) //8
+   ( $TN_MAX_X $TN_MIN_Y $SP_MAX_Z) //9
+//TUNNEL_EXIT - 2
+   ( $SP_MIN_X $TN_MAX_Y $SP_MIN_Z) //0
+   ( $SP_MAX_X $TN_MAX_Y $SP_MIN_Z) //1
+   ( $SP_MAX_X $TN_MAX_Y $SP_MAX_Z) //2
+   ( $SP_MIN_X $TN_MAX_Y $SP_MAX_Z) //3
+   ( $TN_MIN_X $TN_MAX_Y $TN_MIN_Z) //4
+   ( $TN_MAX_X $TN_MAX_Y $TN_MIN_Z) //5
+   ( $TN_MAX_X $TN_MAX_Y $TN_MAX_Z) //6
+   ( $TN_MIN_X $TN_MAX_Y $TN_MAX_Z) //7
+   ( $TN_MIN_X $TN_MAX_Y $SP_MAX_Z) //8
+   ( $TN_MAX_X $TN_MAX_Y $SP_MAX_Z) //9
+//END - 3
+   ( $SP_MIN_X $SP_MAX_Y $SP_MIN_Z) //0
+   ( $SP_MAX_X $SP_MAX_Y $SP_MIN_Z) //1
+   ( $SP_MAX_X $SP_MAX_Y $SP_MAX_Z) //2
+   ( $SP_MIN_X $SP_MAX_Y $SP_MAX_Z) //3
+   ( $TN_MIN_X $SP_MAX_Y $TN_MIN_Z) //4
+   ( $TN_MAX_X $SP_MAX_Y $TN_MIN_Z) //5
+   ( $TN_MAX_X $SP_MAX_Y $TN_MAX_Z) //6
+   ( $TN_MIN_X $SP_MAX_Y $TN_MAX_Z) //7
+   ( $TN_MIN_X $SP_MAX_Y $SP_MAX_Z) //8
+   ( $TN_MAX_X $SP_MAX_Y $SP_MAX_Z) //9
 );
 
 blocks
 (
-    hex (0 1 2 3 4 5 6 7) (20 160 20) simpleGrading (1 1 1)
+//TUNNEL
+    hex ( 4  5 15 14  7  6 16 17) ($CELLS_X_TN $CELLS_Y_ST $CELLS_Z_TN) simpleGrading (1 1 1)
+    hex (14 15 25 24 17 16 26 27) ($CELLS_X_TN $CELLS_Y_TN $CELLS_Z_TN) simpleGrading (1 1 1)
+    hex (24 25 35 34 27 26 36 37) ($CELLS_X_TN $CELLS_Y_EN $CELLS_Z_TN) simpleGrading (1 1 1)
+//TOP
+    hex ( 7  6 16 17  8  9 19 18) ($CELLS_X_TN $CELLS_Y_ST $CELLS_Z_SP) simpleGrading (1 1 1)
+//  hex (17 16 26 27 18 19 29 28) ($CELLS_X_TN $CELLS_Y_TN $CELLS_Z_SP) simpleGrading (1 1 1)
+    hex (27 26 36 37 28 29 39 38) ($CELLS_X_TN $CELLS_Y_EN $CELLS_Z_SP) simpleGrading (1 1 1)
+//LEFT
+    hex ( 0  4 14 10  3  8 18 13) ($CELLS_X_SP $CELLS_Y_ST $CELLS_Z) simpleGrading (1 1 1)
+//  hex (10 14 24 20 13 18 28 23) ($CELLS_X_SP $CELLS_Y_TN $CELLS_Z) simpleGrading (1 1 1)
+    hex (20 24 34 30 23 28 38 33) ($CELLS_X_SP $CELLS_Y_EN $CELLS_Z) simpleGrading (1 1 1)
+//RIGHT
+    hex ( 5  1 11 15  9  2 12 19) ($CELLS_X_SP $CELLS_Y_ST $CELLS_Z) simpleGrading (1 1 1)
+//  hex (15 11 21 25 19 12 22 29) ($CELLS_X_SP $CELLS_Y_TN $CELLS_Z) simpleGrading (1 1 1)
+    hex (25 21 31 35 29 22 32 39) ($CELLS_X_SP $CELLS_Y_EN $CELLS_Z) simpleGrading (1 1 1)
 );
 
 edges
 (
+    arc  6  7 ($TN_MID_X $SP_MIN_Y $TN_DOME_Z)
+    arc 16 17 ($TN_MID_X $TN_MIN_Y $TN_DOME_Z)
+    arc 26 27 ($TN_MID_X $TN_MAX_Y $TN_DOME_Z)
+    arc 36 37 ($TN_MID_X $SP_MAX_Y $TN_DOME_Z)
 );
 
 boundary
@@ -48,7 +152,10 @@ boundary
         type patch;
         faces
         (
-            (3 7 6 2)
+            (30 34 38 33)
+            (34 35 36 37)
+            (36 37 38 39)
+            (35 31 32 39)
         );
     }
     outlet
@@ -56,16 +163,27 @@ boundary
         type patch;
         faces
         (
-            (1 5 4 0)
+            (0 4 8 3)
+            (4 5 6 7)
+            (6 7 8 9)
+            (5 1 2 9)
         );
     }
     sides
     {
-        type patch;
+        type wall;
         faces
         (
-            (0 4 7 3)
-            (2 6 5 1)
+            ( 1 11 12  2)
+            (21 31 32 22)
+            ( 0 10 13  3)
+            (20 30 33 23)
+            ( 3  8 18 13)
+            ( 8  9 19 18)
+            ( 9  2 12 19)
+            (23 28 38 33)
+            (28 29 39 38)
+            (29 22 32 39)
         );
     }
     ground
@@ -73,17 +191,38 @@ boundary
         type wall;
         faces
         (
-            (0 3 2 1)
+            ( 0  4 14 10)
+            ( 4  5 15 14)
+            ( 5  1 11 15)
+            (14 15 25 24)
+            (20 24 34 30)
+            (24 25 35 34)
+            (25 21 31 35)
         );
     }
-    top
+    tunnel
     {
-        type patch;
+        type wall;
         faces
         (
-            (4 5 6 7)
+            (16 15 25 26)
+            (17 16 26 27)
+            (17 14 24 27)
         );
     }
+    mountain
+   {
+        type wall;
+        faces
+        (
+            (10 14 18 13)
+            (15 11 12 19)
+            (17 16 19 18)
+            (20 24 28 23)
+            (25 21 22 29)
+            (27 26 29 28)
+        );
+   }
 );
 
 mergePatchPairs
