@@ -11,11 +11,11 @@
 # conditions.
 
 # check OpenFOAM environment
-if [[ $(echo $WM_PROJECT_VERSION | cut -c1-3) != "3.0" ]]
-then
-    echo "Use OpenFOAM 3.0 with this example script, please."
-    exit
-fi
+# if [[ $(echo $WM_PROJECT_VERSION | cut -c1-3) != "3.0" ]]
+# then
+#     echo "Use OpenFOAM 3.0 with this example script, please."
+#     exit
+# fi
 
 # copy template directory if not present
 if [[ ! -d train-case-transient ]]
