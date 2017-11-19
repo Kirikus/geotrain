@@ -1,0 +1,132 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+|*---------------------------------------------------------------------------*|
+|  File created by CFD support s.r.o., Fri Jul 18 10:42:44 2014               |
+|                    http://www.cdfsupport.com                                |
+\*---------------------------------------------------------------------------*/
+
+forces_locomotive
+{
+    type                forceCoeffs;
+    functionObjectLibs  ( "libforces.so" );
+    outputControl       timeStep;
+    outputInterval      1;
+    patches
+    (
+        train_locomotive_wall
+    );
+    pName       p;
+    UName       U;
+    rhoName     rhoInf;      // Indicates incompressible
+    log         true;
+    rhoInf      1;           // Redundant for incompressible
+    liftDir     (0 0 1);
+    dragDir     (0 -1 0);
+    CofR        (0 0 0);  // Axle midpoint on ground
+    pitchAxis   (1 0 0);
+    magUInf     20;
+    lRef        16.60;        // Wheelbase length
+    Aref        15.75;        // Estimated
+}
+
+forces_car1
+{
+    type                forceCoeffs;
+    functionObjectLibs  ( "libforces.so" );
+    outputControl       timeStep;
+    outputInterval      1;
+    patches
+    (
+        train_car1_wall
+    );
+    pName       p;
+    UName       U;
+    rhoName     rhoInf;      // Indicates incompressible
+    log         true;
+    rhoInf      1;           // Redundant for incompressible
+    liftDir     (0 0 1);
+    dragDir     (0 -1 0);
+    CofR        (0 0 0);  // Axle midpoint on ground
+    pitchAxis   (1 0 0);
+    magUInf     20;
+    lRef        15.40;        // Wheelbase length
+    Aref        15.75;        // Estimated
+}
+
+forces_car2
+{
+    type                forceCoeffs;
+    functionObjectLibs  ( "libforces.so" );
+    outputControl       timeStep;
+    outputInterval      1;
+    patches
+    (
+        train_car2_wall
+    );
+    pName       p;
+    UName       U;
+    rhoName     rhoInf;      // Indicates incompressible
+    log         true;
+    rhoInf      1;           // Redundant for incompressible
+    liftDir     (0 0 1);
+    dragDir     (0 -1 0);
+    CofR        (0 0 0);  // Axle midpoint on ground
+    pitchAxis   (1 0 0);
+    magUInf     20;
+    lRef        15.40;        // Wheelbase length
+    Aref        15.75;        // Estimated
+}
+
+forces_tank
+{
+    type                forceCoeffs;
+    functionObjectLibs  ( "libforces.so" );
+    outputControl       timeStep;
+    outputInterval      1;
+    patches
+    (
+        train_tank_wall
+    );
+    pName       p;
+    UName       U;
+    rhoName     rhoInf;      // Indicates incompressible
+    log         true;
+    rhoInf      1;           // Redundant for incompressible
+    liftDir     (0 0 1);
+    dragDir     (0 -1 0);
+    CofR        (0 0 0);     // Axle midpoint on ground
+    pitchAxis   (1 0 0);
+    magUInf     20;
+    lRef        3.5;         // Wheelbase length
+    Aref        15.75;       // Estimated
+}
+
+forces_all
+{
+    type                forceCoeffs;
+    functionObjectLibs  ( "libforces.so" );
+    outputControl       timeStep;
+    outputInterval      1;
+    patches
+    (
+        train_locomotive_wall train_tank_wall train_car1_wall train_car1_wall
+    );
+    pName       p;
+    UName       U;
+    rhoName     rhoInf;      // Indicates incompressible
+    log         true;
+    rhoInf      1;           // Redundant for incompressible
+    liftDir     (0 0 1);
+    dragDir     (0 -1 0);
+    CofR        (0 0 0);  // Axle midpoint on ground
+    pitchAxis   (1 0 0);
+    magUInf     20;
+    lRef        16.60;        // Wheelbase length
+    Aref        15.75;        // Estimated
+}
+
+// ************************************************************************* //

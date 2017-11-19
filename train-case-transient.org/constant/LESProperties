@@ -1,0 +1,82 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+|*---------------------------------------------------------------------------*|
+|  File created by CFD support s.r.o., Tue Feb 18 09:19:19 2014               |
+|                    http://www.cdfsupport.com                                |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.3;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      LESProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+LESModel            SpalartAllmarasDDES;
+
+delta               cubeRootVol;
+
+printCoeffs         on;
+
+cubeRootVolCoeffs
+{
+    deltaCoeff      1;
+}
+
+PrandtlCoeffs
+{
+    delta           cubeRootVol;
+    cubeRootVolCoeffs
+    {
+        deltaCoeff      1;
+    }
+    smoothCoeffs
+    {
+        delta           cubeRootVol;
+        cubeRootVolCoeffs
+        {
+            deltaCoeff      1;
+        }
+        maxDeltaRatio   1.1;
+    }
+    Cdelta           0.158;
+}
+
+vanDriestCoeffs
+{
+    delta           cubeRootVol;
+    cubeRootVolCoeffs
+    {
+        deltaCoeff      1;
+    }
+    smoothCoeffs
+    {
+        delta           cubeRootVol;
+        cubeRootVolCoeffs
+        {
+            deltaCoeff      1;
+        }
+        maxDeltaRatio   1.1;
+    }
+    Aplus            26;
+    Cdelta           0.158;
+}
+
+smoothCoeffs
+{
+    delta           cubeRootVol;
+    cubeRootVolCoeffs
+    {
+        deltaCoeff      1;
+    }
+    maxDeltaRatio   1.1;
+}
+
+
+// ************************************************************************* //

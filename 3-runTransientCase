@@ -1,0 +1,29 @@
+#!/bin/bash
+# --------------------------------------------------------------------------- #
+#   ==   ===  ==                                                              #
+#  ||   ||=  || ))  support s. r. o. 2014, www.cfdsupport.com                 #
+#   ==        ==                                                              #
+# --------------------------------------------------------------------------- #
+
+# This script will duplicate the template directory train-case-transient.org
+# to train-case-transient and run the unsteady case inside the newly
+# created directory. It reuses the stationary calculation as initial
+# conditions.
+
+# check OpenFOAM environment
+if [[ $(echo $WM_PROJECT_VERSION | cut -c1-3) != "3.0" ]]
+then
+    echo "Use OpenFOAM 3.0 with this example script, please."
+    exit
+fi
+
+# copy template directory if not present
+if [[ ! -d train-case-transient ]]
+then
+    cp -r train-case-transient.org train-case-transient
+fi
+
+# run the transient case
+cd train-case-transient
+./Allrun
+cd ..

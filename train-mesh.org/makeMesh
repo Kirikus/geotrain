@@ -1,0 +1,23 @@
+#!/bin/bash
+# --------------------------------------------------------------------------- #
+#   ==   ===  ==                                                              #
+#  ||   ||=  || ))  support s. r. o. 2014, www.cfdsupport.com                 #
+#   ==        ==                                                              #
+# --------------------------------------------------------------------------- #
+
+# preparations
+echo " 1. Create background mesh (blockMesh)."
+blockMesh | tee blockMesh.log > log.all
+
+# mesh creation
+echo " 2. Parallel decomposition."
+decomposePar | tee decomposePar.log >> log.all
+echo " 3. Mesh creation (snappyHexMesh)."
+mpiexec -np 4 snappyHexMesh -parallel | tee snappyHexMesh.log >> log.all
+echo " 4. Parallel reconstruction."
+reconstructParMesh -latestTime -mergeTol 1e-5 | tee reconstructParMesh.log >> log.all
+echo " 5. Check mesh."
+checkMesh -latestTime | tee checkMesh.log >> log.all
+
+# create symbolic link for last timestep of the mesh creation process
+cp -rf 2 last

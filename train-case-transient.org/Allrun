@@ -1,0 +1,44 @@
+#!/bin/bash
+# --------------------------------------------------------------------------- #
+#   ==   ===  ==                                                              #
+#  ||   ||=  || ))  support s. r. o. 2014, www.cfdsupport.com                 #
+#   ==        ==                                                              #
+# --------------------------------------------------------------------------- #
+
+# check OpenFOAM environment
+if [[ $(echo $WM_PROJECT_VERSION | cut -c1-3) != "3.0" ]]
+then
+    echo "Use OpenFOAM 3.0 with this example script, please."
+    exit
+fi
+
+# copy mesh and initial conditions
+echo " 1. Initialize the case."
+rm -rf 0 log.all constant/polyMesh processor*
+cp -r 0.org 0
+if [[ ! -f ../train-mesh/last/polyMesh/boundary ]]
+then
+    echo "Mesh not found in train-mesh/last."
+    exit
+fi
+cp -rf ./../train-mesh/last/polyMesh constant/polyMesh
+
+# map fields from the stationary case
+echo " 2. Using steady-state fields as initial."
+latestTime=$(ls ../train-case-stationary | grep '^[0-9]*$' | sort -n | tail -1)
+cp ../train-case-stationary/$latestTime/k.gz 0/
+cp ../train-case-stationary/$latestTime/p.gz 0/
+cp ../train-case-stationary/$latestTime/U.gz 0/
+cp ../train-case-stationary/$latestTime/phi.gz 0/
+
+# decompose and compute
+echo " 3. Parallel decomposition."
+decomposePar | tee -a log.all > decomposePar.log
+echo " 4. Mesh optimization (renumberMesh)."
+mpiexec -np 4 renumberMesh -parallel -overwrite | tee -a log.all > renumberMesh.log
+echo " 5. Unsteady simulation (pisoFoam)."
+mpiexec -np 4 pisoFoam -parallel | tee -a log.all > pisoFoam.log
+
+# print info on visualization
+echo "Computation finished."
+echo "Use \"paraFoam -builtin\" for visualization of decomposed case."

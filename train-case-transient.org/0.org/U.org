@@ -1,0 +1,55 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+|*---------------------------------------------------------------------------*|
+|  File created by CFD support s.r.o., Wed Oct 29 15:46:03 2014               |
+|                    http://www.cdfsupport.com                                |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.3;
+    format      ascii;
+    class       volVectorField;
+    location    "0.org";
+    object      U.org;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    "(sides|top)"
+    {
+        type            slip;
+    }
+    inlet
+    {
+        type            fixedValue;
+        value           uniform (0 -20 0);
+    }
+    outlet
+    {
+        type            inletOutlet;
+        inletValue      uniform (0 0 0);
+        value           uniform (0 0 0);
+    }
+    "(ground|train_track_wall)"
+    {
+        type            fixedValue;
+        value           uniform (0 -20 0);
+    }
+    "(train_car1_wall|train_car2_wall|train_locomotive_wall|train_tank_wall)"
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+}
+
+
+// ************************************************************************* //
