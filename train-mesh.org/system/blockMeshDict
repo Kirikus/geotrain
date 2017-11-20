@@ -228,10 +228,17 @@ boundary
             (10 14  4  0)
             (14 15  5  4)
             (15 11  1  5)
-            (24 25 15 14)
             (30 34 24 20)
             (34 35 25 24)
             (35 31 21 25)
+        );
+    }
+    tunnel_ground
+    {
+        type wall;
+        faces
+        (
+            (24 25 15 14)
         );
     }
     tunnel
@@ -245,7 +252,7 @@ boundary
         );
     }
     mountain
-   {
+    {
         type wall;
         faces
         (
@@ -264,7 +271,7 @@ boundary
             (26 45 22 29)
             (27 26 29 28)
         );
-   }
+    }
 );
 
 mergePatchPairs

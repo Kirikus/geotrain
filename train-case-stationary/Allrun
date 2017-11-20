@@ -22,6 +22,7 @@ decomposePar | tee -a log.all > decomposePar.log
 echo " 4. Mesh optimization (renumberMesh)."
 mpiexec -np 4 renumberMesh -parallel -overwrite | tee -a log.all > renumberMesh.log
 echo " 5. Steady-state simulation (simpleFoam)."
-mpiexec -np 4 simpleFoam -parallel | tee -a log.all > simpleFoam.log
+mpiexec -np 4 pimpleDyMFoam -parallel | tee -a log.all > simpleFoam.log
 echo " 6. Parallel reconstruction."
-reconstructPar -latestTime | tee -a log.all > reconstructPar.log
+#reconstructPar -latestTime | tee -a log.all > reconstructPar.log
+reconstructPar | tee -a log.all > reconstructPar.log
