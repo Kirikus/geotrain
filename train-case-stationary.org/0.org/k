@@ -44,11 +44,17 @@ boundaryField
         type            kqRWallFunction;
         value           uniform 1.5;
     }
-    top
+    "(tunnel|tunnel_ground)"
     {
-        type            slip;
+        type            kqRWallFunction;
+        value           uniform 1.5;
     }
-    ".*_wall"
+    mountain
+    {
+        type            kqRWallFunction;
+        value           uniform 1.5;
+    }
+    "train_.*"
     {
         type            kqRWallFunction;
         value           uniform 1.5;

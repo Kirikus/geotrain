@@ -44,11 +44,17 @@ boundaryField
         type            omegaWallFunction;
         value           uniform 6.48;
     }
-    top
+    "(tunnel|tunnel_ground)"
     {
-        type            slip;
+        type            omegaWallFunction;
+        value           uniform 6.48;
     }
-    ".*_wall"
+    mountain
+    {
+        type            omegaWallFunction;
+        value           uniform 6.48;
+    }
+    "train_.*"
     {
         type            omegaWallFunction;
         value           uniform 6.48;

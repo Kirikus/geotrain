@@ -24,14 +24,15 @@ internalField   uniform (0 0 0);
 
 boundaryField
 {
-    "(sides|top)"
+    sides
     {
         type            slip;
     }
     inlet
     {
         type            fixedValue;
-        value           uniform (0 -20 0);
+//      value           uniform (0 -20 0);
+        value           uniform (0 0 0);
     }
     outlet
     {
@@ -39,15 +40,17 @@ boundaryField
         inletValue      uniform (0 0 0);
         value           uniform (0 0 0);
     }
-    "(ground|train_track_wall)"
+//  "(ground|train_track_wall)"
+    "(ground|tunnel|mountain|tunnel_ground)"
     {
         type            fixedValue;
-        value           uniform (0 -20 0);
-    }
-    "(train_car1_wall|train_car2_wall|train_locomotive_wall|train_tank_wall)"
-    {
-        type            fixedValue;
+//      value           uniform (0 -20 0);
         value           uniform (0 0 0);
+    }
+    "train_.*"
+    {
+        type            fixedValue;
+        value           uniform (0 20 0);
     }
 }
 

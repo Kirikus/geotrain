@@ -42,6 +42,8 @@ divSchemes
 laplacianSchemes
 {
     default         Gauss linear corrected;
+
+    laplacian(diffusivity,cellMotionU) Gauss linear uncorrected;
 }
 
 interpolationSchemes

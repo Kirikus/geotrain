@@ -44,12 +44,17 @@ boundaryField
         type            calculated;
         value           uniform 0;
     }
-    top
+    "(tunnel|tunnel_ground)"
     {
         type            calculated;
         value           uniform 0;
     }
-    ".*_wall"
+    mountain
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+    "train_.*"
     {
         type            nutkWallFunction;
         value           uniform 0;

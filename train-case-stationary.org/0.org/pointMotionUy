@@ -1,0 +1,39 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       pointScalarField;
+    object      pointMotionU;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    "(mountain|tunnel|tunnel_ground)"
+    {
+        type            uniformFixedValue;
+        uniformValue    constant 10;
+    }
+    "train_.*"
+    {
+        type            uniformFixedValue;
+        uniformValue    constant 20;
+    }
+    "(sides|ground)"
+//  "(mountain|tunnel|tunnel_ground|sides|ground)"
+    {
+        type            slip;
+    }
+    "(inlet|outlet)"
+    {
+        type            uniformFixedValue;
+        uniformValue    constant 0;
+    }
+}
+
+// ************************************************************************* //
+

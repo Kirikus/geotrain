@@ -34,6 +34,20 @@ solvers
         mergeLevels      1;
     }
 
+    pFinal
+    {
+        $p;
+        tolerance       1e-06;
+        relTol          0;
+    }
+
+    "pcorr.*"
+    {
+        $p
+        tolerance       0.02;
+        relTol          0;
+    }
+
     U
     {
         solver           smoothSolver;
@@ -41,6 +55,13 @@ solvers
         tolerance        1e-8;
         relTol           0.1;
         nSweeps          1;
+    }
+
+    UFinal
+    {
+        $U;
+        tolerance       1e-05;
+        relTol          0;
     }
 
     k
@@ -52,6 +73,13 @@ solvers
         nSweeps          1;
     }
 
+    kFinal
+    {
+        $k;
+        tolerance       1e-05;
+        relTol          0;
+    }
+
     omega
     {
         solver           smoothSolver;
@@ -60,11 +88,34 @@ solvers
         relTol           0.1;
         nSweeps          1;
     }
+
+    omegaFinal
+    {
+        $omega;
+        tolerance       1e-05;
+        relTol          0;
+    }
+
+    cellMotionUy
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-08;
+        relTol          0;
+    }
 }
 
-SIMPLE
+//SIMPLE
+//{
+//    nNonOrthogonalCorrectors 2;
+//}
+
+PIMPLE
 {
-    nNonOrthogonalCorrectors 2;
+    correctPhi          yes;
+    nOuterCorrectors    2;
+    nCorrectors         1;
+    nNonOrthogonalCorrectors 0;
 }
 
 potentialFlow

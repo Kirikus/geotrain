@@ -41,11 +41,15 @@ boundaryField
     {
         type            zeroGradient;
     }
-    top
+    "(tunnel|tunnel_ground)"
     {
-        type            slip;
+        type            zeroGradient;
     }
-    ".*_wall"
+    mountain
+    {
+        type            zeroGradient;
+    }
+    "train_.*"
     {
         type            zeroGradient;
     }
